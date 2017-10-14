@@ -7,7 +7,8 @@ docker run -ti --rm  \
             --env=NEO4J_AUTH=none \
             neo4j
             
-# import some data --- https://neo4j.com/graphgist/organization-learning
+# import some data
+firefox https://neo4j.com/graphgist/organization-learning
 
 # run project
 git clone https://github.com/phoen1x/visnetwork-graph-schema.git
