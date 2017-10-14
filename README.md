@@ -1,3 +1,22 @@
+# Quickstart
+```bash
+# start Neo4j database - https://hub.docker.com/_/neo4j/
+docker run -ti --rm  \
+            -p 7474:7474 \
+            -p 7687:7687 \
+            --env=NEO4J_AUTH=none \
+            neo4j
+            
+# import some data --- https://neo4j.com/graphgist/organization-learning
+
+# run project
+git clone https://github.com/phoen1x/visnetwork-graph-schema.git
+Rscript visnetwork-graph-schema/scripts/Template.R
+
+# open result in web browser
+firefox /tmp/network.html
+```
+
 # Usage
 [read my article](http://www.livingfire.de/proggen/neo4j-graph-schema-visualization-with-netviz-en/)
 
