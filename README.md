@@ -1,2 +1,2 @@
-# visnetwork-graph-schema
-Neo4j graph schema visualization with visNetwork
+# Usage
+[read my article](http://www.livingfire.de/proggen/neo4j-graph-schema-visualization-with-netviz-en/)
