@@ -58,5 +58,5 @@ network <-
 network
 
 # save as HTML
-visSave(network, file = "/tmp/network.html")
+visSave(network, file = "/scripts/output/Docker.html")
 # visSave(network, file = "C:/network.html")

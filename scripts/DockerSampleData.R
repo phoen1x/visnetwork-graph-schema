@@ -10,16 +10,33 @@ graph <- startGraph("http://localhost:7474/db/data/")
 
 # https://nicolewhite.github.io/2015/06/18/visualize-your-graph-with-rneo4j-and-visNetwork.html
 node_query <- "
-CALL db.labels() YIELD label
-RETURN label as id, label, label as group
-ORDER BY label
+MATCH (n)
+WHERE n.name in ['Alice','Bob','Express train','Subway','Ticket Zone1','Ticket Zone3','First Class Travel','Station North']
+RETURN  n.name as id
+      , n.name as label
+      , labels(n)[0] as group
 "
 
 edge_query <- "
-MATCH (n)-[r]->(m)
-RETURN distinct
-      labels(n)[0] as from
-    , labels(m)[0] as to
+MATCH (n:Person)-[r]->(m)
+WHERE n.name IN ['Alice','Bob']
+RETURN
+      n.name as from
+    , m.name as to
+    , type(r) as label
+    , type(r) as title
+UNION
+MATCH (n:Ticket{name:'First Class Travel'})-[r]->(m:Ticket{name:'Ticket Zone3'})
+RETURN
+      n.name as from
+    , m.name as to
+    , type(r) as label
+    , type(r) as title
+UNION
+MATCH (n:Train)-[r]->(m:Station{name:'Station North'})
+RETURN
+      n.name as from
+    , m.name as to
     , type(r) as label
     , type(r) as title
 "
@@ -32,7 +49,7 @@ edges <- cypher(graph, edge_query)
 network <-
     visNetwork(nodes,
                edges,
-               main = "Neo4j graph schema",
+               main = "Sample: First Class Travel",
                height = "700px",
                width = "100%") %>%
     visOptions(
@@ -50,13 +67,17 @@ network <-
     visLegend(width = 0.1,
               position = "right",
               main = "Type") %>%
+    visGroups(groupname = "Person", color = "#FFFB4F") %>%
+    visGroups(groupname = "Station", color = "#FF7D81") %>%
+    visGroups(groupname = "Ticket", color = "#69DD5B") %>%
+    visGroups(groupname = "Train", color = "#F382ED") %>%
     visLayout(randomSeed = 12)  %>%
     visPhysics(solver = "forceAtlas2Based",
-               forceAtlas2Based = list(gravitationalConstant = -200))
+               forceAtlas2Based = list(gravitationalConstant = -80))
 
 # plot the graph
 network
 
 # save as HTML
-visSave(network, file = "/tmp/network.html")
+visSave(network, file = "/scripts/output/DockerSampleData.html")
 # visSave(network, file = "C:/network.html")

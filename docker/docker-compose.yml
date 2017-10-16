@@ -1,0 +1,31 @@
+version: '2.1'
+
+services:
+
+    neo4j:
+#        build: .
+        image: phoen1x/visnetwork-graph-schema
+        ports:
+            - "$PORT_07687_NEO4J_BOLT"
+            - "$PORT_07474_NEO4J_HTTP"
+        environment:
+            - "NEO4J_AUTH=none"
+        volumes:
+            - "$VOLUME_NEO4J_SCRIPTS"
+        healthcheck:
+            test: curl -f curl http://localhost:7474/db/data/ || exit 1
+            interval: 10s
+            timeout: 10s
+            retries: 6
+        restart: always
+
+networks:
+    default:
+        driver: bridge
+        driver_opts:
+            com.docker.network.enable_ipv6: "false"
+            com.docker.network.bridge.name: "$NETWORK_BRIDGE"
+        ipam:
+            driver: default
+            config:
+                - subnet: "$NETWORK_SUBNET"
