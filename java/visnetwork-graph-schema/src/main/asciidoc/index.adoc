@@ -1,0 +1,31 @@
+[[api-skylar-core]]
+= visnetwork-neo4j-demo API
+Handcrafted by Thomas Lutz with ❤ using Spring REST Docs;
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+:sectlinks:
+:operation-curl-request-title: Example request
+:operation-http-response-title: Example response
+
+TIP: This API uses https://en.wikipedia.org/wiki/Hypertext_Application_Language[HAL] /
+http://docs.spring.io/spring-data/rest/docs/current/reference/html[Spring HATEOAS].
+If you are unfamiliar with
+https://martinfowler.com/articles/richardsonMaturityModel.html[Level 3 - Hypermedia Controls] then I highly recommend to watch
+https://www.youtube.com/watch?v=aThIuSsb_OA[this video] before you explore the documentation.
+
+== Schema
+++++
+<iframe src="../snippetGraphOverview.html" frameBorder="0" style="width:100%;min-height:780px;"></iframe>
+++++
+
+[[api-skylar-core-api-index]]
+== Index
+
+operation::api-index[snippets='response-fields,curl-request,http-response,links']
+
+[[api-skylar-core-error]]
+== Error
+
+operation::api-error[snippets='response-fields,curl-request,http-response']

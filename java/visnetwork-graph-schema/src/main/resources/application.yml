@@ -1,0 +1,33 @@
+# https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+endpoints:
+    health:
+        sensitive: false
+
+management:
+    contextPath: /management
+    security:
+        enabled: false
+
+logging:
+    level:
+        de:
+            livingfire: DEBUG
+
+spring:
+    data:
+        neo4j:
+            uri: http://localhost:7474
+        rest:
+            base-path: /api
+    jackson:
+        serialization:
+            indent-output: true
+
+---
+spring:
+    profiles: mock
+    data:
+        neo4j:
+            embedded:
+                enabled: true
+            uri: file:${user.dir}/target/mock_data/neo4j_${random.uuid}/graph.db

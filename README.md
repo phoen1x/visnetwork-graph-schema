@@ -29,14 +29,54 @@ docker-compose up -d
 
 # WAIT A FEW SECONDS for Neo4j to boot then run R-Scripts
 docker-compose exec neo4j Rscript /scripts/Docker.R
-docker-compose exec neo4j Rscript /scripts/DockerSampleData.R
 
 # view results in web browser
 firefox ../scripts/output/Docker.html
-firefox ../scripts/output/DockerSampleData.html
 
 # stop container
 docker-compose down
+```
+
+# Import your database via CSV
+```bash
+# navigate to docker folder
+PROJECT="/tmp/visnetwork-graph-schema/docker"
+cd $PROJECT/docker
+
+# name,email,username
+# Alice,alice,"alice@example.local"
+# Bob,bob,"bob@example.local"
+atom /tmp/foo.csv
+
+# copy data from local file system
+docker cp /tmp/foo.csv visnetwork_neo4j_1:/import/foo.csv
+```
+
+## Drop demo database
+```cypher
+MATCH (n)
+DETACH DELETE n
+```
+
+## Import data
+```cypher
+// https://neo4j.com/blog/importing-data-neo4j-via-csv/
+LOAD CSV WITH HEADERS FROM "file:///foo.csv" AS csvLine FIELDTERMINATOR ','
+MERGE (u:User { name: csvLine.name, username: csvLine.username, email: csvLine.email });
+```
+
+# Import your database via Cypher DUMP
+```bash
+# overwrite initial-database.cql
+PROJECT="/tmp/visnetwork-graph-schema/docker"
+cat /tmp/my_dump.cql > $PROJECT/docker/initial-database.cql
+
+# set docker-compose.yml into build mode
+# replace 'image: ...' with 'build .'
+sed -i 's|image:.*|build: .|' docker-compose.yml
+
+# start in debug mode
+docker-compose up --build && docker-compose down
 ```
 
 # Usage
@@ -47,5 +87,6 @@ docker-compose down
 * [Video Tutorial - Nicole White](https://www.youtube.com/watch?v=bdQ90y9Pefo)
 
 # Further reading
+* [vis.js](http://visjs.org/)
 * [visNetwork](http://datastorm-open.github.io/visNetwork/)
 * [Graph Visualization for Neo4j Schemas](https://neo4j.com/blog/graph-visualization-neo4j-schemas-yfiles/)

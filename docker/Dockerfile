@@ -16,5 +16,14 @@ RUN cat /initial-database.cql \
 
 # set path to graph databse
 RUN     cat /var/lib/neo4j/conf/neo4j.conf > /var/lib/neo4j/conf/neo4j.conf.org \
-    &&  echo "dbms.shell.enabled=true" >> /var/lib/neo4j/conf/neo4j.conf \
-    &&  echo "dbms.directories.data=/data_demo" >> /var/lib/neo4j/conf/neo4j.conf
+    &&  echo "dbms.directories.data=/data_demo" >> /var/lib/neo4j/conf/neo4j.conf \
+    &&  echo "dbms.directories.import=/import" >> /var/lib/neo4j/conf/neo4j.conf \
+    &&  echo "dbms.security.allow_csv_import_from_file_urls=true" >> /var/lib/neo4j/conf/neo4j.conf \
+    &&  echo "dbms.shell.enabled=true" >> /var/lib/neo4j/conf/neo4j.conf
+
+# set import directory
+RUN     mkdir /import \
+    &&  rm -rf /var/lib/neo4j/import \
+    &&  ln -s /import /var/lib/neo4j/import
+
+VOLUME /import

@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>My Network</title>
+    <!-- http://visjs.org/#download_install -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+        #mynetwork {
+            width: 600px;
+            height: 400px;
+            border: 1px solid lightgray;
+        }
+    </style>
+</head>
+
+<body>
+    <p>My Network</p>
+    <div id="mynetwork"></div><div id="config"></div>
+    <script type="text/javascript">
+        // provide data in the DOT language
+        var parsedData = vis.network.convertDot(DOTstring);
+        //parsedData.nodes[0].color='yellow';
+
+        for (var i = 0; i < parsedData.nodes.length; i++) {
+            parsedData.nodes[i].group = parsedData.nodes[i].label;
+        }
+
+        parsedData.options = {
+            nodes: {
+                shape: 'ellipse',
+                borderWidth: 2,
+                shadow: true
+            },
+            edges: {
+                width: 2,
+                shadow: true,
+                smooth: {
+                  forceDirection: "none"
+                }
+            },
+            "physics": {
+              "forceAtlas2Based": {
+                "springLength": 100
+              },
+              "minVelocity": 0.75,
+              "solver": "forceAtlas2Based"
+            },
+            configure: {
+              filter:function (option, path) {
+                if (path.indexOf('physics') !== -1) {
+                  return true;
+                }
+                if (path.indexOf('smooth') !== -1 || option === 'smooth') {
+                  return true;
+                }
+                return false;
+              },
+              container: document.getElementById('config')
+            }
+        };
+
+        // create a network
+        var network = new vis.Network(
+            document.getElementById('mynetwork'), {
+                nodes: parsedData.nodes,
+                edges: parsedData.edges
+            },
+            parsedData.options);
+    </script>
+</body>
+
+</html>
